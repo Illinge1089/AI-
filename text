@@ -1,0 +1,41 @@
+[Terminal Window Showing:]
+
+Welcome to CryptoInvest Advisor!
+I can help analyze cryptocurrencies based on profitability and sustainability.
+Supported cryptocurrencies: Bitcoin, Ethereum, Solana, Cardano, Polkadot
+
+Which cryptocurrency would you like to analyze? **Bitcoin**
+What is your risk appetite? (low/medium/high): **medium**
+
+Bitcoin Analysis
+Current Price: $67432.50
+24h Change: 2.5%
+7d Change: -1.2%
+30d Change: 15.3%
+
+Description: The original cryptocurrency with strong store-of-value properties...
+
+Investment Advice:
+Bitcoin is in an UPWARD trend (↑-1.2% 7d, ↑15.3% 30d).
+This could be a reasonable time to consider a position...
+Sustainability: POOR (2.2/5). Bitcoin has significant environmental concerns...
+
+[Terminal Window Showing:]
+
+Would you like to analyze another cryptocurrency? (yes/no): **yes**
+
+Which cryptocurrency would you like to analyze? **Solana**
+What is your risk appetite? (low/medium/high): **high**
+
+Solana Analysis
+Current Price: $168.45
+24h Change: -0.5%
+7d Change: -5.2%
+30d Change: 8.7%
+
+Description: High-performance blockchain with low fees and energy usage...
+
+Investment Advice:
+Solana is in a NEUTRAL trend (-5.2% 7d, 8.7% 30d).
+The price hasn't shown strong directional movement...
+Sustainability: GOOD (4.1/5). Solana has low environmental impact...

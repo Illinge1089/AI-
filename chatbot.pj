@@ -1,0 +1,173 @@
+import random
+from datetime import datetime
+
+# Predefined cryptocurrency dataset
+crypto_data = {
+    "Bitcoin": {
+        "price": 67432.50,
+        "24h_change": 2.5,
+        "7d_change": -1.2,
+        "30d_change": 15.3,
+        "energy_consumption": "High",
+        "carbon_footprint": "Very High",
+        "project_viability": "Excellent",
+        "description": "The original cryptocurrency with strong store-of-value properties but high energy usage."
+    },
+    "Ethereum": {
+        "price": 3789.20,
+        "24h_change": 1.8,
+        "7d_change": 3.4,
+        "30d_change": 22.1,
+        "energy_consumption": "Medium",
+        "carbon_footprint": "Medium",
+        "project_viability": "Excellent",
+        "description": "Leading smart contract platform that transitioned to more energy-efficient Proof-of-Stake."
+    },
+    "Solana": {
+        "price": 168.45,
+        "24h_change": -0.5,
+        "7d_change": -5.2,
+        "30d_change": 8.7,
+        "energy_consumption": "Low",
+        "carbon_footprint": "Low",
+        "project_viability": "Good",
+        "description": "High-performance blockchain with low fees and energy usage, but has faced some network stability issues."
+    },
+    "Cardano": {
+        "price": 0.45,
+        "24h_change": 0.3,
+        "7d_change": 1.2,
+        "30d_change": -2.4,
+        "energy_consumption": "Low",
+        "carbon_footprint": "Low",
+        "project_viability": "Good",
+        "description": "Research-driven blockchain with strong focus on sustainability and peer-reviewed development."
+    },
+    "Polkadot": {
+        "price": 6.78,
+        "24h_change": 1.2,
+        "7d_change": 4.5,
+        "30d_change": 12.3,
+        "energy_consumption": "Medium",
+        "carbon_footprint": "Medium",
+        "project_viability": "Good",
+        "description": "Interoperability-focused blockchain with modular design and reasonable energy efficiency."
+    }
+}
+
+# Sustainability scoring
+sustainability_scores = {
+    "energy_consumption": {"High": 1, "Medium": 3, "Low": 5},
+    "carbon_footprint": {"Very High": 1, "High": 2, "Medium": 3, "Low": 4, "Very Low": 5},
+    "project_viability": {"Poor": 1, "Fair": 2, "Good": 3, "Very Good": 4, "Excellent": 5}
+}
+
+def calculate_sustainability_score(crypto):
+    """Calculate a sustainability score (1-5) for a cryptocurrency"""
+    energy_score = sustainability_scores["energy_consumption"][crypto_data][crypto]["energy_consumption"]
+    carbon_score = sustainability_scores["carbon_footprint"][crypto_data[crypto]["carbon_footprint"]]
+    viability_score = sustainability_scores["project_viability"][crypto_data[crypto]["project_viability"]]
+    
+    # Weighted average (viability is most important)
+    return round((energy_score * 0.3 + carbon_score * 0.3 + viability_score * 0.4), 1)
+
+def get_price_trend(crypto):
+    """Determine the price trend based on recent changes"""
+    weekly = crypto_data[crypto]["7d_change"]
+    monthly = crypto_data[crypto]["30d_change"]
+    
+    if weekly > 5 and monthly > 15:
+        return "strong upward"
+    elif weekly > 2 and monthly > 8:
+        return "upward"
+    elif weekly < -5 and monthly < -10:
+        return "strong downward"
+    elif weekly < 0 and monthly < 0:
+        return "downward"
+    else:
+        return "neutral"
+
+def get_investment_advice(crypto, risk_appetite):
+    """Generate investment advice based on trends and sustainability"""
+    trend = get_price_trend(crypto)
+    sustainability = calculate_sustainability_score(crypto)
+    
+    advice = []
+    
+    # Profitability advice
+    if trend == "strong upward":
+        advice.append(f"{crypto} is in a STRONG UPWARD trend (↑{crypto_data[crypto]['7d_change']}% 7d, ↑{crypto_data[crypto]['30d_change']}% 30d).")
+        if risk_appetite in ["medium", "high"]:
+            advice.append("This could be a good time to consider buying, but monitor for potential corrections.")
+        else:
+            advice.append("While the trend is positive, the recent gains might make this higher risk for conservative investors.")
+    elif trend == "upward":
+        advice.append(f"{crypto} is in an UPWARD trend (↑{crypto_data[crypto]['7d_change']}% 7d, ↑{crypto_data[crypto]['30d_change']}% 30d).")
+        advice.append("This could be a reasonable time to consider a position, especially if you believe in the long-term potential.")
+    elif trend == "strong downward":
+        advice.append(f"{crypto} is in a STRONG DOWNWARD trend (↓{abs(crypto_data[crypto]['7d_change'])}% 7d, ↓{abs(crypto_data[crypto]['30d_change'])}% 30d).")
+        advice.append("Caution is advised. Unless you're a very experienced investor, it might be wise to wait for stabilization.")
+    elif trend == "downward":
+        advice.append(f"{crypto} is in a DOWNWARD trend (↓{abs(crypto_data[crypto]['7d_change'])}% 7d, ↓{abs(crypto_data[crypto]['30d_change'])}% 30d).")
+        advice.append("This might present a buying opportunity if you believe it's a temporary dip, but do your research first.")
+    else:
+        advice.append(f"{crypto} is in a NEUTRAL trend ({crypto_data[crypto]['7d_change']}% 7d, {crypto_data[crypto]['30d_change']}% 30d).")
+        advice.append("The price hasn't shown strong directional movement recently. Consider dollar-cost averaging if interested.")
+    
+    # Sustainability advice
+    if sustainability >= 4:
+        advice.append(f"Sustainability: EXCELLENT ({sustainability}/5). {crypto} has low environmental impact and strong project fundamentals.")
+    elif sustainability >= 3:
+        advice.append(f"Sustainability: GOOD ({sustainability}/5). {crypto} has reasonable environmental impact and solid project fundamentals.")
+    else:
+        advice.append(f"Sustainability: POOR ({sustainability}/5). {crypto} has significant environmental concerns or project risks.")
+    
+    return "\n".join(advice)
+
+def chatbot():
+    print("Welcome to CryptoInvest Advisor!")
+    print("I can help you analyze cryptocurrencies for investment based on profitability and sustainability.")
+    print("Supported cryptocurrencies: Bitcoin, Ethereum, Solana, Cardano, Polkadot")
+    print("Type 'quit' to exit at any time.\n")
+    
+    while True:
+        # Get user input
+        user_input = input("Which cryptocurrency would you like to analyze? ").strip().title()
+        
+        if user_input.lower() == 'quit':
+            print("Thank you for using CryptoInvest Advisor. Goodbye!")
+            break
+            
+        if user_input not in crypto_data:
+            print("Sorry, I don't have data for that cryptocurrency. Please try one of the supported ones.")
+            continue
+            
+        # Get risk appetite
+        risk_input = input("What is your risk appetite? (low/medium/high): ").strip().lower()
+        while risk_input not in ['low', 'medium', 'high']:
+            print("Please enter 'low', 'medium', or 'high'.")
+            risk_input = input("What is your risk appetite? (low/medium/high): ").strip().lower()
+        
+        # Show basic info
+        crypto = user_input
+        print(f"\n{crypto} Analysis")
+        print(f"Current Price: ${crypto_data[crypto]['price']}")
+        print(f"24h Change: {crypto_data[crypto]['24h_change']}%")
+        print(f"7d Change: {crypto_data[crypto]['7d_change']}%")
+        print(f"30d Change: {crypto_data[crypto]['30d_change']}%")
+        print(f"\nDescription: {crypto_data[crypto]['description']}")
+        
+        # Provide advice
+        print("\nInvestment Advice:")
+        print(get_investment_advice(crypto, risk_input))
+        
+        # Ask if user wants to analyze another
+        another = input("\nWould you like to analyze another cryptocurrency? (yes/no): ").strip().lower()
+        if another != 'yes':
+            print("Thank you for using CryptoInvest Advisor. Happy investing!")
+            break
+        print()
+
+# Start the chatbot
+if __name__ == "__main__":
+    chatbot()
